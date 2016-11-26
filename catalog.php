@@ -2,6 +2,7 @@
 <?php $pageTitle ="Full Catalog";
 
 include("include/data.php");
+include("include/functions.php");
 /////////////////////Condition for section select in header ///////////////////
 
 
@@ -22,12 +23,18 @@ include("include/header.php"); ?>
 
 <div class="section catalog page">
   <div class="wrapper">
-    <h1><?php echo $pageTitle ?></h1>
+    <h1><?php
+     if($section != null){
+       echo "<a href='catalog.php'>Full Catalog</a> &gt; ";
+     }
+     echo $pageTitle?></h1>
+
     <ul class="items">
-      <?php foreach($catalog as $item){
-        echo "<li><a href='#'><img src='" . $item["img"] . "' . alt= '" . $item["title"] .
-        "'/>" . "<p>View Details</p>" . "</a></li>";
-      }
+      <?php
+      $catagories = array_catagory($catalog,$section);
+    foreach($catagories as $id){
+      echo get_item_html($id,$catalog[$id]);
+    }
       ?>
     </ul>
   </div>
