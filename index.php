@@ -1,6 +1,7 @@
 <?php $pageTitle ="Personal Media Library";
 include("include/data.php");
 include("include/functions.php");
+include("include/details.php");
 $section = null;
 include("include/header.php"); ?> <!--include header to header -->
 		<div class="section catalog random">
