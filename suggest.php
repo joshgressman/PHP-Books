@@ -1,9 +1,20 @@
 <?php $pageTitle = "Suggest a Media Item";
+//form verification with trim, filter input
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $name = $_POST["name"];
-  $email = $_POST["email"];
-  $details = $_POST["details"];
+  $name =  trim(filter_input(INPUT_POST,"name",FILTER_SANITIZE_STRING));
+  $email = trim(filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL));;
+  $details = trim(filter_input(INPUT_POST,"details",FILTER_SANITIZE_SPECIAL_CHARS));;
 
+  if ($name == "" || $email == "" || $details == ""){
+      echo "Please fill out the required fields: name, email and details";
+      exit; //stops the process
+    }
+ if ($_POST["address"] != ""){
+    echo "Bad form input";
+    exit;
+  }
+////*********This is the email body****************************************//
+require("include/phpmailer/class.phpmailer.php"); //includes php mailer third party
   echo "<pre>";
   $email_body = "";
   $email_body .= "Name " . $name . "\n";
@@ -49,6 +60,10 @@ include("include/header.php"); ?> <!--include header to header -->
         <tr>
           <th><label for="details">Suggest Item Details</label></th>
           <td><textarea type="text" id="details" name="details"></textarea></td>
+        </tr>
+        <tr style="display: none">
+          <th><label for="address">Address</label></th>
+          <td><input type="text" id="address" name="address" /></td>
         </tr>
       </table>
       <input type="submit" value="send" />
