@@ -15,23 +15,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 ////*********This is the email body****************************************//
 require("include/phpmailer/class.phpmailer.php"); //includes php mailer third party
-  echo "<pre>";
+
+$mail = new PHPMailer;
+if (!$mail->ValidateAddress($email)){
+  echo "Invalid Email";
+  exit;
+}
+
+
   $email_body = "";
   $email_body .= "Name " . $name . "\n";
   $email_body .= "Email ". $email . "\n";
   $email_body .= "Details " . $details . "\n";
-  echo $email_body;
-  echo "</pre>";
-  //.= adds the value of new varible value to the old varibale concatinates one
-  //after the other. will return
-  //  Name Joshua Gressman
-  // Email joshgressman@gmail.com
-  // Details ferfe
+  ///**********PHP MAILER INFO FROM GITHUB********************************//
+  $mail->setFrom($email, $name);
+  $mail->addAddress('joshgressman@gmail.com', 'Josh Gressman');   // Add a recipient
+  // $mail->addAddress('ellen@example.com');    // additional email
+  $mail->isHTML(false); // We want to send as text so set to false
+
+  $mail->Subject = 'Personal Media Library Suggestion ' . $name;
+  $mail->Body    = $email_body;
+
+  if(!$mail->send()) {
+      echo 'Message could not be sent.';
+      echo 'Mailer Error: ' . $mail->ErrorInfo;
+      exit; // stop if error
+  } 
+
   header("location:suggest.php?status=thanks"); //will redirect to thanks message
 }
 
 
-//To do: send email
+
 
 $pageTitle = "Suggest a Media Item";
 $section = "suggest";
